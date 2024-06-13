@@ -1,0 +1,93 @@
+<link rel="stylesheet" href="https://use.typekit.net/lju8ijt.css">
+
+<form action="">
+  <label for="code">Código:</label><br>
+  <input type="text" id="code"><br>
+  <label for="asistentes">Asistentes:</label><br>
+  <select name="cars" id="asistentes">
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+  </select></br></br>
+<button id="submit" type="button">Submit</button>
+</form>
+<br/><br/><br/>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/xdcSFVXd3MU?si=V9b3rkcboMSogomg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.4/firebase-firestore.js"></script>
+<script type="text/javascript">
+(function() {
+
+// Import the functions you need from the SDKs you need
+
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyCaBOKU8Y_2M8hQGcIyf648psOIztp89VI",
+  authDomain: "boda-88fef.firebaseapp.com",
+  databaseURL: "https://boda-88fef-default-rtdb.firebaseio.com",
+  projectId: "boda-88fef",
+  storageBucket: "boda-88fef.appspot.com",
+  messagingSenderId: "960835229417",
+  appId: "1:960835229417:web:5552778a68062efcddc278",
+  measurementId: "G-GPPNHQ6ZT4"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+//const analytics = firebase.getAnalytics(app);
+
+      var push_to_firebase = function(data){
+        alert("Thanks for sending a message. I'll try and get back to you as soon as possible.")
+        var db = firebase.firestore();
+
+        db.collection("messages").add({
+            code: data["code"],
+            asistentes: data["asistentes"]
+        })
+        .then(function(docRef) {
+            console.log("Message sent, ID: ", docRef.id);
+            location.reload();
+        })
+        .catch(function(error) {
+            console.error("Message could not be sent: ", error);
+        });
+      }
+
+      var contact_submit = function(){
+        var code = document.getElementById("code");
+        var asistentes = document.getElementById("asistentes");
+
+        var data = {
+          "code": code.value,
+          "asistentes": asistentes.value
+        }
+        push_to_firebase(data);
+
+      }
+      
+      var form = function(){
+        var x = document.getElementById("code").value;
+        var items;
+        if (x === "1") {
+          items = ["1", "2", "3"];
+        } else {
+          items = ["1", "2"]
+        }
+        var str = ""
+        for (var item of items) {
+          str += "<option>" + item + "</option>"
+        }
+        document.getElementById("asistentes").innerHTML = str;
+      }
+
+      document.getElementById("submit").addEventListener("click", contact_submit);
+  
+      document.getElementById('code').addEventListener("keyup", form);
+})();
+</script>
